@@ -13,15 +13,19 @@ public class RegistrController {
 @Autowired
 public UserService userService;
 
+    @RequestMapping( value = "/registration", method = RequestMethod.GET)
+    public String registration(){
+        return "registration";
+    }
+
     @RequestMapping( value = "/registration", method = RequestMethod.POST)
     public String add(UserDTO userDTO, Model model)
     {
-
         Users users = userService.addUser(userDTO);
         if (users != null) {
             model.addAttribute("users", users);
         }else {
-            model.addAttribute("users","User can't be created");
+            model.addAttribute("users","");
         }
         return "registration";
     }

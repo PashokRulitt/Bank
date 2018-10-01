@@ -12,7 +12,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
-
 @Entity
 @Table(name = "users")
 public class Users {
@@ -22,7 +21,7 @@ public class Users {
         setPassword(userDTO.getPassword());
     }
 
-    public Users(@NotBlank(message = "Can't be empty") String username, @NotBlank(message = "Can't be empty") String password, boolean active, @Email @NotBlank(message = "Can't be empty") String email) {
+    public Users( String username,  String password, boolean active, @Email String email) {
         this.username = username;
         this.password = password;
         this.active = active;
@@ -38,11 +37,11 @@ public class Users {
     private Long Id;
 
     @Column(name = "username")
-    @NotBlank(message = "Can't be empty")
+
     private String username;
 
     @Column(name = "password")
-    @NotBlank(message = "Can't be empty")
+
     private  String password;
 
     @Column(name = "active")
@@ -50,7 +49,7 @@ public class Users {
 
     @Column(name = "email")
     @Email
-    @NotBlank(message = "Can't be empty")
+
     private String email;
 
 //    @Column(name = "accounts")
