@@ -1,23 +1,28 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Service.UserService;
+import com.example.demo.UserDTO.UserDTO;
+import com.example.demo.domens.Users;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrController {
+@Autowired
+public UserService userService;
 
-    @GetMapping("registration")
-    public String add(@RequestParam String email,
-                      @RequestParam String password,
-                      @RequestParam String confirm, Model model)
+    @RequestMapping( value = "/registration", method = RequestMethod.POST)
+    public String add(UserDTO userDTO, Model model)
     {
-        model.addAttribute(email);
-        model.addAttribute(password);
-        model.addAttribute(confirm);
 
+        Users users = userService.addUser(userDTO);
+        if (users != null) {
+            model.addAttribute("users", users);
+        }else {
+            model.addAttribute("users","User can't be created");
+        }
         return "registration";
     }
 
