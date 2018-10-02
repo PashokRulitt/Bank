@@ -2,16 +2,19 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Service.UserService;
 import com.example.demo.UserDTO.UserDTO;
-import com.example.demo.domens.Users;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.domens.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrController {
-@Autowired
-public UserService userService;
+
+private final UserService userService;
+
+    public RegistrController(UserService userService) {
+        this.userService = userService;
+    }//@Autowired
 
     @RequestMapping( value = "/registration", method = RequestMethod.GET)
     public String registration(){
@@ -21,13 +24,13 @@ public UserService userService;
     @RequestMapping( value = "/registration", method = RequestMethod.POST)
     public String add(UserDTO userDTO, Model model)
     {
-        Users users = userService.addUser(userDTO);
-        if (users != null) {
-            model.addAttribute("users", users);
+        User user = userService.addUser(userDTO);
+        if (user != null) {
+            model.addAttribute("users", user);
         }else {
-            model.addAttribute("users","");
+            model.addAttribute("users","Can't be created");
         }
-        return "registration";
+        return "redirect:/login";
     }
 
 }
