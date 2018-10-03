@@ -5,6 +5,9 @@ import com.example.demo.UserDTO.UserDTO;
 import com.example.demo.domens.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import sun.security.util.Password;
 
 import javax.validation.constraints.Email;
@@ -14,6 +17,9 @@ import java.awt.*;
 public class UserService {
     @Autowired
     public UserRepo userRepo;
+
+
+
 
     public Users addUser(UserDTO userDTO){
 
@@ -26,5 +32,48 @@ public class UserService {
         }
 
         return null;
+    }
+    private boolean editUsername(Users users, String username){
+        if(StringUtils.isEmpty(username)){
+            return  false;
+        }else{
+            users.setUsername(username);
+            return  true;
+        }
+    }
+    private boolean editPassword(Users users,String oldpassword,
+                                String newpassword,
+                                String repeatpassword   )
+    {
+        if(StringUtils.isEmpty(oldpassword) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(repeatpassword)  ){
+            return false;
+        }
+        boolean isNewPassword = (!StringUtils.isEmpty(newpassword) && newpassword.equals(repeatpassword));
+        boolean isOldPassword = (oldpassword.equals(users.getPassword()));
+        if(isNewPassword &&  isOldPassword){
+            users.setPassword(newpassword);
+            return true;
+        }else {
+            return  false;
+        }
+    }
+
+    public void updateProfile(Users users,
+                              String newpassword,
+                              String repeatpassword,
+                              Model model,
+                              String username)
+    {
+        if(!editUsername(users, username)){
+            model.addAttribute("username","Can't change name");
+        }
+
+        if (editPassword(users, username,newpassword,repeatpassword)){
+            model.addAttribute("password","Success");
+        }else {
+            model.addAttribute("password","Error");
+        }
+        userRepo.save(users);
+
     }
 }

@@ -34,7 +34,7 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long id;
 
     @Column(name = "username")
 
@@ -57,11 +57,11 @@ public class Users {
 
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        id = id;
     }
 
     public String getUsername() {
@@ -76,7 +76,7 @@ public class Users {
         return password;
     }
 
-    public void setPassword(String password) {
+   public void setPassword(String password) {
         this.password = password;
     }
 
@@ -92,7 +92,7 @@ public class Users {
         return email;
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         this.email = email;
     }
 }

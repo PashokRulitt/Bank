@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrController {
+
 @Autowired
 public UserService userService;
 
@@ -27,7 +28,7 @@ public UserService userService;
         }else {
             model.addAttribute("users","");
         }
-        return "registration";
+        return "redirect:/login";
     }
 
 }
