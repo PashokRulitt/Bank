@@ -26,7 +26,7 @@ public UserService userService;
         if (users != null) {
             model.addAttribute("users", users);
         }else {
-            model.addAttribute("users","");
+            model.addAttribute("users","Error");
         }
         return "redirect:/login";
     }

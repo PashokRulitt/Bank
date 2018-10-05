@@ -28,7 +28,7 @@ public class LoginController {
 //        }else {
 //            model.addAttribute("users","Can't be logged");
 //        }
-//        return "redirect:/hello";
+//        return "redirect:/main";
 //    }
 
 }
