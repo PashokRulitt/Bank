@@ -14,7 +14,7 @@ public class UserDTO {
         return username;
     }
 
-    public void setUsername(String email) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

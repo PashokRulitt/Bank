@@ -25,17 +25,19 @@ public class UserService implements UserDetailsService {
 
 
     public Users addUser(UserDTO userDTO){
+        if (userRepo.findByUsername(userDTO.getUsername()) == null &&
+                userDTO.getPassword().equals(userDTO.getPassword2())) {
 
-        if (userRepo.findByUsername(userDTO.getUsername()) != null && userDTO.getPassword().equals(userDTO.getPassword2())) {
+            return userRepo.save(new Users(userDTO));
+        }
 
-//            userDTO.setPassword(userDTO.getPassword());
-            return userRepo.save(new Users (userDTO));
+        return null;
 
 
         }
 
-        return null;
-    }
+
+
     private boolean editUsername(Users users, String username){
         if(StringUtils.isEmpty(username)){
             return  false;
