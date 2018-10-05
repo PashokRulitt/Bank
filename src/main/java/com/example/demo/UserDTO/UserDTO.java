@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class UserDTO {
-    private  String email;
+    private  String username;
     private  String password;
     private  String password2;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = username;
     }
 
     public String getPassword() {

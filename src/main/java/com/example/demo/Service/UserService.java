@@ -4,6 +4,9 @@ import com.example.demo.Repositories.UserRepo;
 import com.example.demo.UserDTO.UserDTO;
 import com.example.demo.domens.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -14,7 +17,7 @@ import javax.validation.constraints.Email;
 import java.awt.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     @Autowired
     public UserRepo userRepo;
 
@@ -23,7 +26,7 @@ public class UserService {
 
     public Users addUser(UserDTO userDTO){
 
-        if (userRepo.findByEmail(userDTO.getEmail()).isEmpty() && userDTO.getPassword().equals(userDTO.getPassword2())) {
+        if (userRepo.findByUsername(userDTO.getUsername()) != null && userDTO.getPassword().equals(userDTO.getPassword2())) {
 
 //            userDTO.setPassword(userDTO.getPassword());
             return userRepo.save(new Users (userDTO));
@@ -76,4 +79,15 @@ public class UserService {
         userRepo.save(users);
 
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String user) throws UsernameNotFoundException {
+        Users users = userRepo.findByUsername(user);
+        if (users == null) {
+            throw new UsernameNotFoundException("est uje");
+        }
+
+        return users;
+    }
+
 }
