@@ -34,7 +34,7 @@ public UserService userService;
 {
 
 
-//        userService.updateProfile(username,oldpassword,newpassword,repeatpassword,);
+//        userService.updateProfile(username,oldpassword,newpassword,repeatpassword);
 
        return "profile" ;
 }
