@@ -10,6 +10,9 @@ public class UserDTO {
     private  String password;
     private  String password2;
 
+    public boolean isActive(){
+        return true;
+    }
     public String getUsername() {
         return username;
     }

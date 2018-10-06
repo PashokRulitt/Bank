@@ -20,6 +20,7 @@ import java.util.Collection;
 public class Users implements UserDetails {
 
     public Users(UserDTO userDTO){
+        setActive(userDTO.isActive());
         setUsername(userDTO.getUsername());
         setPassword(userDTO.getPassword());
     }
