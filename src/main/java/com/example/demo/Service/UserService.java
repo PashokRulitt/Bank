@@ -38,22 +38,22 @@ public class UserService implements UserDetailsService {
 
 
     private boolean editEmail(Users users, String email){
-        if(StringUtils.isEmpty(email)){
+        if(email.isEmpty()){
             return  false;
         }else{
             users.setEmail(email);
             return  true;
         }
     }
-    private boolean editPassword(Users users,String password,
+    private boolean editPassword(Users users,String oldpassword,
                                 String newpassword,
                                 String confirm   )
     {
-        if(StringUtils.isEmpty(password) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(confirm)  ){
+        if(StringUtils.isEmpty(oldpassword) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(confirm )){
             return false;
         }
         boolean isNewPassword = (!StringUtils.isEmpty(newpassword) && newpassword.equals(confirm));
-        boolean checkPassword = passwordEncoder.matches(password,users.getPassword());
+        boolean checkPassword = passwordEncoder.matches(oldpassword,users.getPassword());
         if(isNewPassword &&  checkPassword){
             users.setPassword(passwordEncoder.encode(newpassword));
             return true;
@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateProfile(Users users,
-                              String password,
+                              String oldpassword,
                               String confirm,
                               Model model,
                               String email,
@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
             model.addAttribute("email","Can't change email");
         }
 
-        if (editPassword(users,newpassword,password,confirm)){
+        if (editPassword(users,oldpassword,newpassword,confirm)){
             model.addAttribute("password","Success");
         }else {
             model.addAttribute("password","Error");
