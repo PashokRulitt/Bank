@@ -4,14 +4,15 @@
 <nav th:replace="layout :: header"></nav>
 <body>
 <div class="container">
+
 <form method="post" th:action = "@{/profile}">
-   <div>
-    <label>"${email}"</label>
-   </div>
+    <div class="font-weight-normal mr-3 mt-3" th:if="${#httpServletRequest.remoteUser != null}">
+        <p th:text="${#httpServletRequest.remoteUser}"></p>
+    </div>
     <br>
     <div class="form-group">
-        <label for="exampleInputEmail1">Укажите свой Никнейм</label>
-        <input type="text" class="form-control" name = "username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+        <label >Укажите свой Почту</label>
+        <input type="email" class="form-control" name = "email"   placeholder="Enter email">
     </div>
     <br>
     <div>
@@ -19,21 +20,19 @@
     </div>
     <br>
     <div class="form-group">
-        <label for="exampleInputEmail1">Старый пароль</label>
-        <input type="password" class="form-control" name = "password" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="Enter password">
+        <label >Старый пароль</label>
+        <input type="password" class="form-control" name = "password"   placeholder="Enter password">
     </div>
-    <div>
-        <label>Изменить пароль</label>
+
+
+    <div class="form-group">
+        <label>Новый пароль</label>
+        <input type="text" class="form-control" name = "newpassword"  placeholder="Enter new password">
     </div>
 
     <div class="form-group">
-        <label for="exampleInputEmail1">Новый пароль</label>
-        <input type="text" class="form-control" name = "newpassword" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter new password">
-    </div>
-
-    <div class="form-group">
-        <label for="exampleInputEmail1">Введите еще раз</label>
-        <input type="password" class="form-control" name = "confirm" id="exampleInputEmail4" aria-describedby="emailHelp" placeholder="Confirm password">
+        <label >Введите еще раз</label>
+        <input type="password" class="form-control" name = "confirm" placeholder="Confirm password">
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

@@ -1,14 +1,9 @@
 package com.example.demo.UserDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 public class UserDTO {
     private  String username;
     private  String password;
-    private  String password2;
+    private  String confirm;
 
     public boolean isActive(){
         return true;
@@ -29,11 +24,11 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getPassword2() {
-        return password2;
+    public String getConfirm() {
+        return confirm;
     }
 
-    public void setPassword2(String password2) {
-        this.password2 = password2;
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
     }
 }

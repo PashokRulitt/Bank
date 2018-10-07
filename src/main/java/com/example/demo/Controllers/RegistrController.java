@@ -20,14 +20,14 @@ public UserService userService;
     }
 
     @RequestMapping( value = "/registration", method = RequestMethod.POST)
-    public String add(UserDTO userDTO, Model model)
-    {
+    public String add(UserDTO userDTO, Model model) throws InterruptedException {
         Users users = userService.addUser(userDTO);
-        if (users == null) {
+        if (users != null) {
             model.addAttribute("users", users);
         }else {
             model.addAttribute("users","Error");
         }
+
         return "redirect:/login";
     }
 

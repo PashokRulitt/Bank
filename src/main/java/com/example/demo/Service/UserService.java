@@ -11,11 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
-import sun.security.util.Password;
-
-import javax.validation.constraints.Email;
-import java.awt.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -23,14 +18,12 @@ public class UserService implements UserDetailsService {
     public UserRepo userRepo;
 
     @Autowired
-    private PasswordEncoder p;
-
-
+    private PasswordEncoder passwordEncoder;
 
     public Users addUser(UserDTO userDTO){
         if (userRepo.findByUsername(userDTO.getUsername()) == null &&
-                userDTO.getPassword().equals(userDTO.getPassword2())) {
-            userDTO.setPassword(p.encode(userDTO.getPassword()));
+                userDTO.getPassword().equals(userDTO.getConfirm())) {
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             return userRepo.save(new Users(userDTO));
         }
 
@@ -38,28 +31,31 @@ public class UserService implements UserDetailsService {
 
 
         }
+        public Users findUser(String username){
+
+        return userRepo.findByUsername(username);
+        }
 
 
-
-    private boolean editUsername(Users users, String username){
-        if(StringUtils.isEmpty(username)){
+    private boolean editEmail(Users users, String email){
+        if(StringUtils.isEmpty(email)){
             return  false;
         }else{
-            users.setUsername(username);
+            users.setEmail(email);
             return  true;
         }
     }
-    private boolean editPassword(Users users,String oldpassword,
+    private boolean editPassword(Users users,String password,
                                 String newpassword,
-                                String repeatpassword   )
+                                String confirm   )
     {
-        if(StringUtils.isEmpty(oldpassword) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(repeatpassword)  ){
+        if(StringUtils.isEmpty(password) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(confirm)  ){
             return false;
         }
-        boolean isNewPassword = (!StringUtils.isEmpty(newpassword) && newpassword.equals(repeatpassword));
-        boolean isOldPassword = (oldpassword.equals(users.getPassword()));
-        if(isNewPassword &&  isOldPassword){
-            users.setPassword(newpassword);
+        boolean isNewPassword = (!StringUtils.isEmpty(newpassword) && newpassword.equals(confirm));
+        boolean checkPassword = passwordEncoder.matches(password,users.getPassword());
+        if(isNewPassword &&  checkPassword){
+            users.setPassword(passwordEncoder.encode(newpassword));
             return true;
         }else {
             return  false;
@@ -67,16 +63,17 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateProfile(Users users,
-                              String newpassword,
-                              String repeatpassword,
+                              String password,
+                              String confirm,
                               Model model,
-                              String username)
+                              String email,
+                              String newpassword)
     {
-        if(!editUsername(users, username)){
-            model.addAttribute("username","Can't change name");
+        if(!editEmail(users, email)){
+            model.addAttribute("email","Can't change email");
         }
 
-        if (editPassword(users, username,newpassword,repeatpassword)){
+        if (editPassword(users,newpassword,password,confirm)){
             model.addAttribute("password","Success");
         }else {
             model.addAttribute("password","Error");
