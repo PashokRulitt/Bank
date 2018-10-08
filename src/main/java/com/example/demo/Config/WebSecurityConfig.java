@@ -33,13 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/registration","/","/profile").permitAll()
+                .antMatchers("/registration","/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
 //                .failureUrl("/login-error.html")
                 .permitAll()
+                .and()
+                .rememberMe().rememberMeParameter("remember")
                 .and()
                 .logout()
                 .permitAll();

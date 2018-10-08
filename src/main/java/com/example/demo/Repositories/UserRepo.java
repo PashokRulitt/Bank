@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserRepo extends CrudRepository<Users,Long> {
 
     Users findByUsername(String username);
+//    List<Users> findSuchEmail(String email);
 
 
 }

@@ -36,13 +36,20 @@ public class UserService implements UserDetailsService {
         return userRepo.findByUsername(username);
         }
 
-
+//        private boolean checkEmail(){
+//        boolean isOk
+//            userRepo.findSuchEmail(userRepo);
+//        }
     private boolean editEmail(Users users, String email){
-        if(email.isEmpty()){
+        if(StringUtils.isEmpty(email) ){
             return  false;
         }else{
-            users.setEmail(email);
-            return  true;
+            String userEmail = users.getEmail();
+            boolean isEmailChanged = (email != null && !email.equals(userEmail) || userEmail !=null && !userEmail.equals(email));
+            if(isEmailChanged) {
+                users.setEmail(email);
+                return true;
+            } else {return false;}
         }
     }
     private boolean editPassword(Users users,String oldpassword,
@@ -70,13 +77,15 @@ public class UserService implements UserDetailsService {
                               String newpassword)
     {
         if(!editEmail(users, email)){
-            model.addAttribute("email","Can't change email");
+            model.addAttribute("emailError","Can't change email");
         }
 
         if (editPassword(users,oldpassword,newpassword,confirm)){
-            model.addAttribute("password","Success");
+            model.addAttribute("passwordSuccess","Success");
         }else {
-            model.addAttribute("password","Error");
+            model.addAttribute("passwordError","Error changing password");
+
+
         }
         userRepo.save(users);
 

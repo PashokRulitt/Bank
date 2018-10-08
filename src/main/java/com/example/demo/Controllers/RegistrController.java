@@ -14,6 +14,8 @@ public class RegistrController {
 @Autowired
 public UserService userService;
 
+
+
     @RequestMapping( value = "/registration", method = RequestMethod.GET)
     public String registration(){
         return "registration";

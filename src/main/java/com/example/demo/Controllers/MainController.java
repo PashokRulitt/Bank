@@ -29,11 +29,12 @@ public UserService userService;
     }
 
     @PostMapping("/profile")
-    public String profilepost( @AuthenticationPrincipal Users users,
-                              @RequestParam String email,
-                              @RequestParam String oldpassword,
-                              @RequestParam String newpassword,
-                              @RequestParam String confirm,
+    public String profilepost(
+                                @AuthenticationPrincipal Users users,
+                                @RequestParam String email,
+                                @RequestParam String oldpassword,
+                                @RequestParam String newpassword,
+                                @RequestParam String confirm,
                               Model model) {
 
         userService.updateProfile(users, oldpassword, confirm, model, email, newpassword);

@@ -30,22 +30,32 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Счета</a>
+                <a class="btn btn-outline-dark" href="#">Счета</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="http://localhost:8080/profile">Настройки</a>
+                <a class="btn btn-outline-dark" href="http://localhost:8080/profile">Настройки</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Пополнение</a>
+                <a class="btn btn-outline-dark" href="#">Пополнение</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="#">Конвертация</a>
+                <a class="btn btn-outline-dark " href="#">Конвертация</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Переводы</a>
+                <a class="btn btn-outline-dark" href="#">Переводы</a>
             </li>
+
         </ul>
     </div>
+    <div class="font-weight-normal mr-3 mt-3" th:if="${#httpServletRequest.remoteUser != null}">
+        <p th:text="${#httpServletRequest.remoteUser}"></p>
+    </div>
+    <div>
+    <form th:action="@{/logout}" method="post" th:if="${#httpServletRequest.remoteUser != null}">
+        <input class="btn btn-outline-dark" type="submit" sec:authorize="isAuthenticated()" value="Sign Out"/>
+    </form>
+</div>
+
 </nav>
 </body>
 </html>
