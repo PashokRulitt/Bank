@@ -16,6 +16,10 @@ public UserService userService;
 
 
 
+    @RequestMapping( value = "/recover", method = RequestMethod.GET)
+    public String recover(){
+        return "recovery";
+    }
     @RequestMapping( value = "/registration", method = RequestMethod.GET)
     public String registration(){
         return "registration";
@@ -29,7 +33,7 @@ public UserService userService;
 //            model.addAttribute("registerSuccess", "Success");
             return "redirect:/login";
         }else {
-            model.addAttribute("registerError","Can't register ");
+//            model.addAttribute("registerError","Can't register ");
             return "/registration";
         }
 

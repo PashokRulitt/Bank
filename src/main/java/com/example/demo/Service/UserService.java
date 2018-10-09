@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Repositories.UserRepo;
 import com.example.demo.UserDTO.UserDTO;
 import com.example.demo.domens.Users;
+import com.sun.xml.internal.ws.resources.SenderMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -31,15 +34,24 @@ public class UserService implements UserDetailsService {
 
 
         }
-        public Users findUser(String username){
+        public void sendMessage(Users users, String message, String titleMessage){
+        if(!StringUtils.isEmpty(users.getEmail())){
+//         emailService.send(users.getEmail(),titleMessage,message);
+        }
+        }
+        public  void passwordRecovery(Users users){
+        if(!StringUtils.isEmpty(users.getEmail())){
+            String newpassword = UUID.randomUUID().toString().substring(24,36);
+            users.setPassword(passwordEncoder.encode(newpassword));
+            userRepo.save(users);
+            String message = String.format("Hi, %s \n Here is your new password: %s ",
+                    users.getEmail().substring(0,users.getEmail().indexOf('@')),newpassword);
+            String titleMessage= "LNPO-bank(recovery password)";
 
-        return userRepo.findByUsername(username);
+
+        }
         }
 
-//        private boolean checkEmail(){
-//        boolean isOk
-//            userRepo.findSuchEmail(userRepo);
-//        }
     private boolean editEmail(Users users, String email){
         if(StringUtils.isEmpty(email) ){
             return  false;
