@@ -20,8 +20,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Users addUser(UserDTO userDTO){
-        if (userRepo.findByUsername(userDTO.getUsername()) == null &&
+    public Users addUser(UserDTO userDTO, String username){
+        if (userRepo.findByUsername(userDTO.getUsername()) == null &&//tut we search in other way |||userRepo.findByUsername(username)
                 userDTO.getPassword().equals(userDTO.getConfirm())) {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             return userRepo.save(new Users(userDTO));

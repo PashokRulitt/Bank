@@ -22,15 +22,16 @@ public UserService userService;
     }
 
     @RequestMapping( value = "/registration", method = RequestMethod.POST)
-    public String add(UserDTO userDTO, Model model) throws InterruptedException {
-        Users users = userService.addUser(userDTO);
+    public String add(UserDTO userDTO, Model model,@RequestParam String username) throws InterruptedException {
+        Users users = userService.addUser(userDTO,username);
         if (users != null) {
-            model.addAttribute("users", users);
+            model.addAttribute("registerSuccess", "Success");
+            return "redirect:/login";
         }else {
-            model.addAttribute("users","Error");
+            model.addAttribute("registrError","Can't register ");
         }
 
-        return "redirect:/login";
+        return "/registration";
     }
 
 }
