@@ -7,12 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepo extends CrudRepository<Users,Long> {
 
     Users findByUsername(String username);
-//    List<Users> findSuchEmail(String email);
+    Optional<Users> findByEmail(String email);
 
 
 }

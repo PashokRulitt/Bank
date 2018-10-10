@@ -1,11 +1,14 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Repositories.UserRepo;
 import com.example.demo.Service.UserService;
 import com.example.demo.UserDTO.UserDTO;
 import com.example.demo.domens.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -16,10 +19,32 @@ public UserService userService;
 
 
 
-    @RequestMapping( value = "/recover", method = RequestMethod.GET)
+    @GetMapping("/recovery")
     public String recover(){
         return "recovery";
     }
+
+    @PostMapping("/recovery")
+    public String postRecover(@RequestParam String email, Model model) {
+        if (StringUtils.isEmpty(email)) {
+            model.addAttribute("emailRecoveryError", "Field is empty");
+            return "recovery";
+        }
+        if (userService.findByEmail(email).isPresent()){
+            Users user = userService.findByEmail(email).get();
+            userService.passwordRecovery(user);
+            model.addAttribute("SendMessageRecoveryWaring","We send you a new password to current email address");
+            return "redirect:/login";
+        }else {
+            model.addAttribute("SendMessageRecoveryError", "Email does't exist");
+            return "recovery";
+        }
+
+    }
+
+
+
+
     @RequestMapping( value = "/registration", method = RequestMethod.GET)
     public String registration(){
         return "registration";

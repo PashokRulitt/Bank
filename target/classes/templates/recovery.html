@@ -11,8 +11,16 @@
 
 <div class="container mb-10 pt-5" >
     <!--th:action="@{/recover}" method="post"-->
-    <form >
+    <form th:action="@{/recovery}" method="post">
 
+        <div th:if="${SendMessageRecoveryWaring}"
+             class="alert alert-waring" role="alert"
+             th:text="${SendMessageRecoveryWaring}">
+        </div>
+        <div th:if="${SendMessageRecoveryError}"
+             class="alert alert-danger" role="alert"
+             th:text="${SendMessageRecoveryError}">
+        </div>
         <h1 class="display-1">Recover</h1>
 
         <div class="form-group">
@@ -22,7 +30,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-dark">Enter</button>
-        <label>Have an account <a href="/login">Sign in</a> </label>
+        <label>Have an account? <a href="/login">Sign in</a> </label>
         <br>
 
     </form>
