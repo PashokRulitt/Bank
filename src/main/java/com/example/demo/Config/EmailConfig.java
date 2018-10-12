@@ -10,26 +10,24 @@ import sun.security.pkcs11.P11Util;
 
 import java.util.Properties;
 
-
+@Configuration
 public class EmailConfig {
-    @Value("$(host)")
+    @Value("smtp.gmail.com")
     private String host;
 
-    @Value("${port}")
+    @Value("465")
     private int  port;
 
 
-    @Value("${protocol}")
+    @Value("smtp")
     private String protocol;
 
     @Value("${username}")
     private String username;
 
-    @Value("${password}")
+    @Value("")
     private String password;
 
-    @Value("${debug}")
-    private String debug;
 
     @Bean
     public JavaMailSender javaMailSender(){
@@ -38,9 +36,8 @@ public class EmailConfig {
         mailSender.setPort(port);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
-        Properties properties =mailSender.getJavaMailProperties();
-        properties.setProperty("mail.debug",debug);
-        properties.setProperty("mail.transport.protocol",protocol);
+        Properties properties = mailSender.getJavaMailProperties();
+        properties.setProperty("protocol",protocol);
         return mailSender;
     }
 }

@@ -11,11 +11,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 public class RegistrController {
 
 @Autowired
 public UserService userService;
+
 
 
 
@@ -29,20 +32,21 @@ public UserService userService;
         if (StringUtils.isEmpty(email)) {
             model.addAttribute("emailRecoveryError", "Field is empty");
             return "recovery";
-        }
-        if (userService.findByEmail(email).isPresent()){
-            Users user = userService.findByEmail(email).get();
-            userService.passwordRecovery(user);
-            model.addAttribute("SendMessageRecoveryWaring","We send you a new password to current email address");
-            return "redirect:/login";
-        }else {
-            model.addAttribute("SendMessageRecoveryError", "Email does't exist");
-            return "recovery";
+        } else {
+            Optional<Users> userOptional = userService.findByEmail(email);
+            if (userOptional.isPresent()) {
+
+                userService.passwordRecovery(userOptional.get());
+                model.addAttribute("SendMessageRecoveryWaring", "We send you a new password to current email address");
+                return "redirect:/login";
+            } else {
+                model.addAttribute("SendMessageRecoveryError", "Email does't exist");
+                return "recovery";
+            }
+
         }
 
     }
-
-
 
 
     @RequestMapping( value = "/registration", method = RequestMethod.GET)

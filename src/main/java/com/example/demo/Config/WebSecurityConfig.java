@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+//TODO          не могу разобраться
                 .antMatchers("/registration","/","/recovery").permitAll()
                 .anyRequest().authenticated()
                 .and()

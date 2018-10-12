@@ -11,30 +11,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class Users implements UserDetails {
-
-    public Users(UserDTO userDTO){
-        setActive(userDTO.isActive());
-        setUsername(userDTO.getUsername());
-        setPassword(userDTO.getPassword());
-    }
-
-    public Users( String username,  String password, boolean active, @Email String email) {
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.email = email;
-    }
-
-    public Users() {
-    }
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,9 +40,28 @@ public class Users implements UserDetails {
     @Email
     private String email;
 
-//    @Column(name = "accounts")
-//    private Accounts account;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //связано с полем client в классе Account
+    private List<Account> accounts = new ArrayList<>(); //у клиента может быть много счетов
 
+    //обратная связь с Transaction
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //связано с полем client в классе Transaction
+    private List<Transaktion> transactions = new ArrayList<>(); //у клиента может быть много транзакций
+
+    public Users(UserDTO userDTO){
+        this.active = userDTO.isActive();//setActive
+        this.username = userDTO.getUsername();
+        this.password = userDTO.getPassword();
+    }
+
+    public Users( String username,  String password, boolean active, @Email String email) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.email = email;
+    }
+
+    public Users() {
+    }
 
     public Long getId() {
         return id;
@@ -65,6 +71,7 @@ public class Users implements UserDetails {
         id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -73,6 +80,7 @@ public class Users implements UserDetails {
         this.username = username;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -121,6 +129,6 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive();
+        return this.active;
     }
 }

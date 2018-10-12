@@ -40,11 +40,10 @@ public class UserService implements UserDetailsService {
 
         return null;
 
-
         }
-        public void sendMessage(Users users, String message, String titleMessage){
+        private void sendMessage(Users users, String message, String titleMessage){
         if(!StringUtils.isEmpty(users.getEmail())){
-         emailService.send(users.getEmail(),titleMessage,message);
+         emailService.send( users.getEmail(),titleMessage,  message);
         }
         }
         public  void passwordRecovery(Users users){
@@ -52,9 +51,11 @@ public class UserService implements UserDetailsService {
             String newpassword = UUID.randomUUID().toString().substring(24,36);
             users.setPassword(passwordEncoder.encode(newpassword));
             userRepo.save(users);
-            String message = String.format("Hi, %s \n"+" Here is your new password: %s ",
-                    users.getEmail().substring(0,users.getEmail().indexOf('@')),newpassword);
-            String titleMessage= "LNPO-bank(recovery password)";
+            String message = String.format(
+                    "Hi, %s! \n"+
+                          "Here is your new password: %s ",
+                    users.getUsername(),newpassword);
+            String titleMessage="LNPO-bank(recovery password)";
             sendMessage(users,message,titleMessage);
 
 
