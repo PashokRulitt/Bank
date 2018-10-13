@@ -17,7 +17,7 @@ public class Transaktion {
     //клиент кторый запросил транзакцию
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user; //у тарнзакции может быть только один клиент - заказчик
+    private User user; //у тарнзакции может быть только один клиент - заказчик
 
     //счет с которго снимаются деньги
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +43,7 @@ public class Transaktion {
     public Transaktion() {
     }
 
-    public Transaktion(Users user, Account from, Account too, String currency,
+    public Transaktion(User user, Account from, Account too, String currency,
                        Double amount, String convertationToo, Double amountAfterConvert) {
         this.user = user;
         this.from = from;
@@ -54,7 +54,7 @@ public class Transaktion {
         this.amountAfterConvert = amountAfterConvert;
     }
 
-    public void setClient(Users user) {
+    public void setClient(User user) {
         this.user = user;
     }
 

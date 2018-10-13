@@ -15,6 +15,7 @@ public class Account {
     //владелец счета
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
+    private User user;
 
     //обратная связь c Transaction, ссылки на транзакции кторые снимали деньги со счета
     @OneToMany(mappedBy = "from", cascade = CascadeType.ALL) //связано с полем from в классе transaction
@@ -24,11 +25,13 @@ public class Account {
     @OneToMany(mappedBy = "too", cascade = CascadeType.ALL) //связано с полем too в too transaction
     private List<Transaktion> transactionsPut = new ArrayList<>(); //на счет можно много раз ложить
 
-    private Users user;
+
 
     private  String currency;
 
     private Double amount = 0.0;
+
+    private Long accNumber;
 
     public Account() {
     }
@@ -41,7 +44,7 @@ public class Account {
         return id;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -53,7 +56,7 @@ public class Account {
         return amount;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -77,5 +80,13 @@ public class Account {
 
     public List<Transaktion> getTransactionsPut() {
         return transactionsPut;
+    }
+
+    public Long getAccNumber() {
+        return accNumber;
+    }
+
+    public void setAccNumber(Long accNumber) {
+        this.accNumber = accNumber;
     }
 }

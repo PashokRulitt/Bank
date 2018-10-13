@@ -2,7 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.Repositories.UserRepo;
 import com.example.demo.UserDTO.UserDTO;
-import com.example.demo.domens.Users;
+import com.example.demo.domens.User;
 //import com.sun.xml.internal.ws.resources.SenderMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,95 +27,99 @@ public class UserService implements UserDetailsService {
     @Autowired
     private  EmailService emailService;
 
-    public Optional<Users> findByEmail (String email){
+    public Optional<User> findByEmail (String email){
         return userRepo.findByEmail(email);
     }
 
-    public Users addUser(UserDTO userDTO){
+    public User addUser(UserDTO userDTO){
         if (userRepo.findByUsername(userDTO.getUsername()) == null &&//tut we search in other way |||userRepo.findByUsername(username)
                 userDTO.getPassword().equals(userDTO.getConfirm())) {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            return userRepo.save(new Users(userDTO));
+            return userRepo.save(new User(userDTO));
         }
 
         return null;
 
         }
-        private void sendMessage(Users users, String message, String titleMessage){
-        if(!StringUtils.isEmpty(users.getEmail())){
-         emailService.send( users.getEmail(),titleMessage,  message);
+        private void sendMessage( String user ,String message, String titleMessage){//User user,
+//        if(!StringUtils.isEmpty(user.getEmail())){
+         emailService.send(user,titleMessage,  message);// user.getEmail()
         }
-        }
-        public  void passwordRecovery(Users users){
-        if(!StringUtils.isEmpty( users.getEmail())){
-            String newpassword = UUID.randomUUID().toString().substring(24,36);
-            users.setPassword(passwordEncoder.encode(newpassword));
-            userRepo.save(users);
-            String message = String.format(
-                    "Hi, %s! \n"+
-                          "Here is your new password: %s ",
-                    users.getUsername(),newpassword);
-            String titleMessage="LNPO-bank(recovery password)";
-            sendMessage(users,message,titleMessage);
+//        }
+        public void passwordRecovery(){//User user
+//        if(user != null) {
+//            if (!StringUtils.isEmpty(user.getEmail())) {
+                String newpassword = UUID.randomUUID().toString().substring(24, 36);
+//                user.setPassword(passwordEncoder.encode(newpassword));
+//                userRepo.save(user);
+                String message = String.format(
+                        "Hi, %s! \n" +
+                                "Here is your new password: %s ",
+                     "kostya"   , newpassword);//user.getUsername()
+                String titleMessage = "LNPO-bank(recovery password)";
+                sendMessage("legkoy1973@gmail.com", message, titleMessage);
 
 
-        }
+//            }
+//        }else {
+//            throw new NullPointerException();
+//        }
         }
 
-    private boolean editEmail(Users users, String email){
+    private boolean editEmail(User user, String email){
         if(StringUtils.isEmpty(email) ){
             return  false;
         }else{
-            String userEmail = users.getEmail();
+            String userEmail = user.getEmail();
             boolean isEmailChanged = (email != null && !email.equals(userEmail) || userEmail !=null && !userEmail.equals(email));
             if(isEmailChanged) {
-                users.setEmail(email);
+                user.setEmail(email);
                 return true;
             } else {return false;}
         }
     }
-    private boolean editPassword(Users users,String oldpassword,
-                                String newpassword,
-                                String confirm   )
+    private boolean editPassword(User user, String oldpassword,
+                                 String newpassword,
+                                 String confirm   )
     {
         if(StringUtils.isEmpty(oldpassword) || StringUtils.isEmpty(newpassword) || StringUtils.isEmpty(confirm )){
             return false;
         }
         boolean isNewPassword = (!StringUtils.isEmpty(newpassword) && newpassword.equals(confirm));
-        boolean checkPassword = passwordEncoder.matches(oldpassword,users.getPassword());
+        boolean checkPassword = passwordEncoder.matches(oldpassword, user.getPassword());
         if(isNewPassword &&  checkPassword){
-            users.setPassword(passwordEncoder.encode(newpassword));
+            user.setPassword(passwordEncoder.encode(newpassword));
             return true;
         }else {
             return  false;
         }
     }
 
-    public void updateProfile(Users users,
+    public void updateProfile(User user,
                               String oldpassword,
                               String confirm,
                               Model model,
                               String email,
                               String newpassword)
     {
-        if(!editEmail(users, email)){
+        if(!editEmail(user, email)){
             model.addAttribute("emailError","Can't change email");
         }
 
-        if (editPassword(users,oldpassword,newpassword,confirm)){
+        if (editPassword(user,oldpassword,newpassword,confirm)){
             model.addAttribute("passwordSuccess","Success");
         }else {
             model.addAttribute("passwordError","Error changing password");
 
 
         }
-        userRepo.save(users);
+        userRepo.save(user);
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String user) throws UsernameNotFoundException {
-        Users users = userRepo.findByUsername(user);
+        User users = userRepo.findByUsername(user);
         if (users == null) {
             throw new UsernameNotFoundException("est uje");
         }

@@ -21,7 +21,7 @@ import java.util.List;
 //@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class Users implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,20 +47,20 @@ public class Users implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //связано с полем client в классе Transaction
     private List<Transaktion> transactions = new ArrayList<>(); //у клиента может быть много транзакций
 
-    public Users(UserDTO userDTO){
+    public User(UserDTO userDTO){
         this.active = userDTO.isActive();//setActive
         this.username = userDTO.getUsername();
         this.password = userDTO.getPassword();
     }
 
-    public Users( String username,  String password, boolean active, @Email String email) {
+    public User(String username, String password, boolean active, @Email String email) {
         this.username = username;
         this.password = password;
         this.active = active;
         this.email = email;
     }
 
-    public Users() {
+    public User() {
     }
 
     public Long getId() {
