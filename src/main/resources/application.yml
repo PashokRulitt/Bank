@@ -1,0 +1,54 @@
+spring:
+ mail:
+    host: ${FT_MAIL_SMTP_HOST}
+    port: ${FT_MAIL_SMTP_PORT}
+    protocol: smtp
+    username: ${FT_MAIL_SMTP_USERNAME}
+    password: ${FT_MAIL_SMTP_PASSWORD}
+    defaultEncoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        smtp:
+          starttls:
+            enable: ${FT_MAIL_SMTP_STARTTLS}
+            required: ${FT_MAIL_SMTP_TLSREQUIRED}
+          auth: ${FT_MAIL_SMTP_AUTH}
+          connectiontimeout: ${FT_MAIL_SMTP_CONN_TIMEOUT}
+          timeout: ${FT_MAIL_SMTP_TIMEOUT}
+          writetimeout: ${FT_MAIL_SMTP_WRITE_TIMEOUT}
+          ssl:
+            trust: smtp.gmail.com
+      debug: true
+ jpa:
+  hibernate:
+      ddl-auto: update
+#    show-sql: false
+#    generate-ddl: true
+
+ datasource:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/bank #?autoReconnect=true&useSSL=false
+      username: ${MYSQLDATA_USERNAME}
+      password: ${MYSQLDATA_PASSWORD}
+#
+# datasource:
+#      driverClassName: org.postgresql.Driver
+#      url: postgres://itlshqhicpotpe:61d489845c0605a60fb37f9e67779d4d9f9a57e9fd331ef5336beb137172ffd1@ec2-50-17-225-140.compute-1.amazonaws.com:5432/d93vsgd8njusd4
+#      username: ${PGDATA_USERNAME}
+#      password: ${PGDATA_PASSWORD}
+
+
+
+
+
+
+
+
+#       properties.hibernate:
+#                                        dialect: org.hibernate.dialect.MySQL5Dialect
+#                                        temp.use_jdbc_metadata_defaults: false
+#                                        show_sql: true
+#                                        format_sql: true
+#                                        enable_lazy_load_no_trans: true #If you would like to keep Lazy Load and you are using Spring Boot
+#
